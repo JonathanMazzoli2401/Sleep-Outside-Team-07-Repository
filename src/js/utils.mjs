@@ -46,8 +46,10 @@ export function renderListWithTemplate(
 
 export async function loadTemplate(path) {
   const res = await fetch(path);
-  const template = await res.text();
-  return template;
+  if (!res.ok) {
+    throw new Error(`Template not found: ${path}`);
+  }
+  return await res.text();
 }
 
 export function renderWithTemplate(template, parentElement, data, callback) {
