@@ -9,7 +9,7 @@ function convertToJson(res) {
 export default class ProductData {
   constructor(category) {
     this.category = category;
-    this.path = `./json/${this.category}.json`;
+    this.path = `${window.location.pathname.includes("sleep-outside-team07") ? "/sleep-outside-team07" : ""}/json/${this.category}.json`;
   }
 
   async getData() {
