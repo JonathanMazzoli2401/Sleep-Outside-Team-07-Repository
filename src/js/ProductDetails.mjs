@@ -1,4 +1,4 @@
-import { getLocalStorage, setLocalStorage } from './utils.mjs';
+import { getLocalStorage, setLocalStorage } from "./utils.mjs";
 
 export default class ProductDetails {
   constructor(productId, dataSource) {
@@ -12,12 +12,12 @@ export default class ProductDetails {
     this.renderProductDetails();
 
     document
-      .getElementById('addToCart')
-      .addEventListener('click', this.addProductToCart.bind(this));
+      .getElementById("addToCart")
+      .addEventListener("click", this.addProductToCart.bind(this));
   }
 
   addProductToCart() {
-    let cartItems = getLocalStorage('so-cart') || [];
+    let cartItems = getLocalStorage("so-cart") || [];
 
     const existingProduct = cartItems.find(
       (item) => item.Id === this.product.Id
@@ -30,16 +30,17 @@ export default class ProductDetails {
       cartItems.push(productToAdd);
     }
 
-    setLocalStorage('so-cart', cartItems);
+    setLocalStorage("so-cart", cartItems);
   }
 
   renderProductDetails() {
-    const container = document.querySelector('#product-detail');
+    const container = document.querySelector("#product-detail");
 
     container.innerHTML = `
       <h2>${this.product.Name}</h2>
-      <img src="${this.product.Image}" alt="${this.product.Name}">
-      <p>${this.product.Description}</p>
+      <img src="${this.product.Images.PrimaryLarge}" alt="${this.product.Name}">
+      <h3>${this.product.Brand.Name}</h3>
+      <p>${this.product.DescriptionHtmlSimple}</p>
       <p><strong>Price:</strong> $${this.product.FinalPrice}</p>
       <button id="addToCart">Add to Cart</button>
     `;

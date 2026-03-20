@@ -70,3 +70,7 @@ export async function loadHeaderFooter() {
   renderWithTemplate(headerTemplate, headerElement);
   renderWithTemplate(footerTemplate, footerElement);
 }
+
+export async function convertToJSON(response) {
+  return await response.json();
+}
