@@ -1,25 +1,19 @@
-function convertToJson(res) {
-  if (res.ok) {
-    return res.json();
-  } else {
-    throw new Error("Bad Response");
-  }
-}
+import { convertToJSON } from "./utils.mjs";
+
+const baseURL = import.meta.env.VITE_SERVER_URL;
 
 export default class ProductData {
-  constructor(category) {
-    this.category = category;
-    this.path = `/json/${this.category}.json`;
-  }
+  constructor() {}
 
-  async getData() {
-    const response = await fetch(this.path);
-    const data = await convertToJson(response);
-    return data;
+  async getData(category) {
+    const response = await fetch(`${baseURL}/products/search/${category}`);
+    const data = await convertToJSON(response);
+    return data.Result;
   }
 
   async findProductById(id) {
-    const products = await this.getData();
-    return products.find((item) => item.Id == id);
+    const response = await fetch(`${baseURL}/product/${id}`);
+    const data = await convertToJSON(response);
+    return data.Result;
   }
 }
