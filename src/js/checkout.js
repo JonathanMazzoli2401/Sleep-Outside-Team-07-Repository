@@ -7,5 +7,10 @@ const checkout = new CheckoutProcess("so-cart");
 checkout.init();
 
 document.querySelector("#zip").addEventListener("blur", () => {
-    checkout.calculateOrderTotal();
+  checkout.calculateOrderTotal();
+});
+
+document.querySelector("#checkout-form").addEventListener("submit", async (e) => {
+  e.preventDefault();
+  await checkout.checkout(e.target);
 });
