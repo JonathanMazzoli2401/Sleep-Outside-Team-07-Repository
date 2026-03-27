@@ -3,14 +3,21 @@ import CheckoutProcess from "./CheckoutProcess.mjs";
 
 loadHeaderFooter();
 
-const checkout = new CheckoutProcess("so-cart");
-checkout.init();
+const myCheckout = new CheckoutProcess("so-cart");
+myCheckout.init();
 
 document.querySelector("#zip").addEventListener("blur", () => {
-  checkout.calculateOrderTotal();
+  myCheckout.calculateOrderTotal();
 });
 
 document.querySelector("#checkout-form").addEventListener("submit", async (e) => {
   e.preventDefault();
-  await checkout.checkout(e.target);
+
+  const form = e.target;
+  if (!form.checkValidity()) {
+    form.reportValidity();
+    return;
+  }
+
+  await myCheckout.checkout(form);
 });

@@ -33,6 +33,7 @@ img {
 header {
   display: flex;
   justify-content: space-between;
+  align-items: center;
   padding: 0.5rem;
 }
 
@@ -121,17 +122,72 @@ button {
 
 /* Cart icon styles */
 .cart {
-  padding-top: 1em;
   position: relative;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0;
+  margin: 0;
   text-align: center;
 }
 
-.cart svg {
-  width: 25px;
+.cart a {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 34px;
+  height: 34px;
+  text-decoration: none;
 }
+
+.cart svg {
+  width: 34px;
+  height: 34px;
+  display: block;
+}
+
 
 .cart:hover svg {
   fill: gray;
+}
+
+.cart-count {
+  position: absolute;
+  top: -6px;
+  right: -8px;
+  background-color: #d97706;
+  color: #fff;
+  font-size: 0.72rem;
+  font-weight: 700;
+  min-width: 1.15rem;
+  height: 1.15rem;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  line-height: 1;
+  z-index: 2;
+}
+
+.cart-count.hidden {
+  display: none;
+}
+
+.empty-cart-message {
+  list-style: none;
+  background: #fff;
+  border: 1px solid #ddd;
+  border-radius: 0.75rem;
+  padding: 2rem;
+  text-align: center;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+}
+
+.empty-cart-message p {
+  margin-bottom: 1rem;
+  font-size: 1.1rem;
+  font-weight: 600;
 }
 
 /* End cart icon styles */
@@ -435,6 +491,51 @@ button {
 
 .checkout-message p {
   margin: 0;
+}
+
+.alert-list {
+  margin: 1rem 0 1.5rem;
+  border: 1px solid #d97706;
+  background-color: #f6ad55;
+  color: #2d1b00;
+  border-radius: 0.35rem;
+  overflow: hidden;
+}
+
+.alert-list p {
+  margin: 0;
+  padding: 0.85rem 1rem;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.12);
+  font-weight: 600;
+}
+
+.alert-list p:last-child {
+  border-bottom: none;
+}
+
+.success-page {
+  max-width: 900px;
+  margin: 3rem auto;
+  padding: 0 1rem 3rem;
+}
+
+.success-card {
+  background: #fff;
+  border: 1px solid #ddd;
+  border-radius: 0.75rem;
+  padding: 2rem;
+  text-align: center;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+}
+
+.success-card h1 {
+  margin-top: 0;
+  margin-bottom: 1rem;
+}
+
+.success-card p {
+  margin-bottom: 1.5rem;
+  font-size: 1.1rem;
 }
 
 @media screen and (min-width: 500px) {

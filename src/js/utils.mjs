@@ -69,10 +69,21 @@ export async function loadHeaderFooter() {
 
   renderWithTemplate(headerTemplate, headerElement);
   renderWithTemplate(footerTemplate, footerElement);
+
+  updateCartCount();
 }
 
 export async function convertToJson(response) {
-  return await response.json();
+  const jsonResponse = await response.json();
+
+  if (response.ok) {
+    return jsonResponse;
+  } else {
+    throw {
+      name: "servicesError",
+      message: jsonResponse,
+    };
+  }
 }
 
 export function formDataToJSON(formData) {
@@ -81,4 +92,52 @@ export function formDataToJSON(formData) {
     obj[key] = value;
   }
   return obj;
+}
+
+export function alertMessage(message, scroll = true) {
+  removeAlerts();
+
+  const main = document.querySelector("main");
+  if (!main) return;
+
+  const alert = document.createElement("div");
+  alert.className = "alert-list";
+
+  if (Array.isArray(message)) {
+    alert.innerHTML = message.map((msg) => `<p>${msg}</p>`).join("");
+  } else {
+    alert.innerHTML = `<p>${message}</p>`;
+  }
+
+  main.prepend(alert);
+
+  if (scroll) {
+    window.scrollTo({
+      top: 0,
+      behavior: "smooth",
+    });
+  }
+}
+
+export function removeAlerts() {
+  document.querySelectorAll(".alert-list").forEach((alert) => alert.remove());
+}
+
+export function updateCartCount() {
+  const cartItems = getLocalStorage("so-cart") || [];
+  const cartCountElement = document.querySelector("#cart-count");
+
+  if (!cartCountElement) return;
+
+  const totalItems = cartItems.reduce((total, item) => {
+    return total + (item.quantity || 1);
+  }, 0);
+
+  cartCountElement.textContent = totalItems;
+
+  if (totalItems > 0) {
+    cartCountElement.classList.remove("hidden");
+  } else {
+    cartCountElement.classList.add("hidden");
+  }
 }
