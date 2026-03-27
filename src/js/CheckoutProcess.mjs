@@ -1,4 +1,9 @@
-import { getLocalStorage, formDataToJSON } from "./utils.mjs";
+import {
+  getLocalStorage,
+  formDataToJSON,
+  alertMessage,
+  removeAlerts,
+} from "./utils.mjs";
 import ExternalServices from "./ExternalServices.mjs";
 
 export default class CheckoutProcess {
@@ -55,22 +60,9 @@ export default class CheckoutProcess {
     }));
   }
 
-  showMessage(message, type = "success") {
-    const messageBox = document.querySelector("#checkout-message");
-    const messageText = document.querySelector("#checkout-message-text");
-
-    if (!messageBox || !messageText) return;
-
-    messageText.textContent = message;
-    messageBox.classList.remove("hidden", "success", "error");
-    messageBox.classList.add(type);
-
-    setTimeout(() => {
-      messageBox.classList.add("hidden");
-    }, 2500);
-  }
-
   async checkout(form) {
+    removeAlerts();
+
     const formData = new FormData(form);
     const orderData = formDataToJSON(formData);
     const totals = this.calculateOrderTotal();
@@ -86,14 +78,42 @@ export default class CheckoutProcess {
       console.log("Order submitted:", result);
 
       localStorage.removeItem(this.cartKey);
-      this.showMessage("Order placed successfully!", "success");
-
-      setTimeout(() => {
-        window.location.href = "../index.html";
-      }, 1800);
+      window.location.href = "../checkout/success.html";
     } catch (error) {
       console.error("Checkout error:", error);
-      this.showMessage("There was a problem placing your order.", "error");
+      console.log("Full error object:", error);
+      console.log("Error message:", error?.message);
+
+      let messages = ["There was a problem placing your order."];
+
+      if (error?.message) {
+        if (Array.isArray(error.message)) {
+          messages = error.message;
+        } else if (typeof error.message === "string") {
+          messages = [error.message];
+        } else if (Array.isArray(error.message.errors)) {
+          messages = error.message.errors;
+        } else if (Array.isArray(error.message.error)) {
+          messages = error.message.error;
+        } else if (Array.isArray(error.message.message)) {
+          messages = error.message.message;
+        } else if (Array.isArray(error.message.Message)) {
+          messages = error.message.Message;
+        } else if (typeof error.message.message === "string") {
+          messages = [error.message.message];
+        } else if (typeof error.message.Message === "string") {
+          messages = [error.message.Message];
+        } else if (typeof error.message.Error === "string") {
+          messages = [error.message.Error];
+        } else {
+          const values = Object.values(error.message).flat();
+          if (values.length) {
+            messages = values.map((item) => String(item));
+          }
+        }
+      }
+
+      alertMessage(messages);
     }
   }
 }
